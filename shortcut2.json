@@ -1,0 +1,62 @@
+{
+  "name": "记账快捷方式",
+  "description": "记录账单金额、时间、类型和备注",
+  "variables": {
+    "amount_bill": {
+      "type": "number",
+      "default": 888,
+      "description": "输入账单金额"
+    },
+    "dt_bill": {
+      "type": "timestamp",
+      "default": "now",
+      "description": "选择账单时间"
+    },
+    "type_bill": {
+      "type": "option",
+      "options": [
+        {
+          "label": "支出",
+          "value": "expense"
+        },
+        {
+          "label": "收入",
+          "value": "income"
+        }
+      ],
+      "default": "expense",
+      "description": "选择账单类型"
+    },
+    "comment_bill": {
+      "type": "text",
+      "default": "",
+      "description": "输入备注信息"
+    }
+  },
+  "actions": [
+    {
+      "type": "http",
+      "method": "POST",
+      "url": "https://your-accounting-api.com/record",
+      "headers": {
+        "Content-Type": "application/json"
+      },
+      "body": {
+        "amount": "{{amount_bill}}",
+        "time": "{{dt_bill}}",
+        "type": "{{type_bill}}",
+        "comment": "{{comment_bill}}"
+      },
+      "success": {
+        "type": "notification",
+        "title": "记账成功",
+        "content": "时间: {{dt_bill}} | 金额: {{amount_bill}} | 类型: {{type_bill}} | 备注: {{comment_bill}}"
+      },
+      "error": {
+        "type": "notification",
+        "title": "记账失败",
+        "content": "网络错误，请检查后重试"
+      }
+    }
+  ]
+}
